@@ -1,7 +1,5 @@
 package com.ca.datamasker.custom;
 
-import com.sun.javafx.binding.StringFormatter;
-
 import javax.swing.text.MaskFormatter;
 import java.text.ParseException;
 import java.util.Arrays;
@@ -31,7 +29,8 @@ public class CPF{
      */
     public CPF(final String number){
         this.number = number;
-        this.checkDigit = this.calcCheckDigit(number.replaceAll("\\D+", ""));
+        final String formatMaskRemoved = number.replaceAll("\\D+", "");
+        this.checkDigit = this.calcCheckDigit(formatMaskRemoved);
     }
 
     public String getNumber() {
@@ -43,7 +42,7 @@ public class CPF{
     }
 
     private String calcCheckDigit(final String number){
-        final String[] split = number.split("\\d");
+        final String[] split = number.split("(?!^)");
         final List<Integer> cpfColumns = Arrays.stream(split).map(s -> Integer.valueOf(s)).collect(Collectors.toList());
 
         final int firstCheckDigit = sumColumnsByWeight(cpfColumns);

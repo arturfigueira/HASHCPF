@@ -1,6 +1,5 @@
 package com.ca.datamasker.custom;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -37,12 +36,8 @@ class MockCPFFactory {
      */
     public String getACPF(){
         final IntStream ints = (new Random().ints(this.size.getSize(), 0, 9));
-        final List<Integer> cpfColumns = ints.boxed().collect(Collectors.toList());
-
-        final String unformattedValue = cpfColumns.stream().map(Objects::toString).collect(Collectors.joining(""));
-
+        final String unformattedValue = ints.boxed().map(Objects::toString).collect(Collectors.joining(""));
         final CPF cpf = new CPF(unformattedValue);
-
         return cpf.toString(this.mask.getMaskFormat());
     }
 }
