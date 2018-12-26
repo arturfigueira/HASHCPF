@@ -1,8 +1,12 @@
 package com.ca.datamasker.custom;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 /**
  * Factory class to help creating synthetic CPF, valid or not,
@@ -33,32 +37,26 @@ class CPFFactory {
      * @return
      */
     public String getACPF(){
-        final ArrayList<Integer> cpfColumns = new ArrayList<>();
-        int sumColumns = 0;
-        for(int i=0; i<this.size.getSize();i++){
-            final int columnNumber = genRandomNumber();
-            sumColumns += (getStartWeight() - i) * columnNumber;
-            cpfColumns.add(columnNumber);
-        }
+        final IntStream ints = (new Random().ints(this.size.getSize(), 0, 9));
+        final List<Integer> cpfColumns = ints.boxed().collect(Collectors.toList());
 
-        final int firstCheckDigit = calCheckDigit(sumColumns);
+        final int firstCheckDigit = sumColumnsByWeight(cpfColumns);
         cpfColumns.add(firstCheckDigit);
 
-        sumColumns = 0;
-        for(int i =0; i<cpfColumns.size(); i++){
-            sumColumns += (cpfColumns.size() + 1 - i) * cpfColumns.get(i);
-        }
-
-        final int secondCheckDigit = calCheckDigit(sumColumns);
+        final int secondCheckDigit = sumColumnsByWeight(cpfColumns);
         cpfColumns.add(secondCheckDigit);
 
         return cpfColumns.stream().map(Objects::toString).collect(Collectors.joining(""));
     }
 
-    private int genRandomNumber(){
-        int numero = (int) (Math.random() * 10);
-        return numero;
+    private int sumColumnsByWeight(final List<Integer> cpfColumns) {
+        int sumColumns = 0;
+        for(int i=0; i<cpfColumns.size(); i++){
+            sumColumns+=(cpfColumns.size() + 1 - i) * cpfColumns.get(i);
+        }
+        return calCheckDigit(sumColumns);
     }
+
 
     private int calCheckDigit(final int number){
         final int modular = (number * 10) % 11;
