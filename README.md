@@ -6,7 +6,7 @@ HASHCPF is a CA Fast Data Masker custom function, made to enable CA FDM to consi
 * The function will hash Brazilian CPFs.
 * The function ensures the same format and consistent masks for the same original value, but does not ensure uniqueness.
 * The function can only hash CPFs WITH its check digit
-* The function can CPFs values with or without its format mask (ex: *XXX.XXX.XXX-XX* )
+* The function can hash CPFs with or without its format mask (ex: *XXX.XXX.XXX-XX* )
 * The mask algorithm is based on CA Fast Data Masker *FORMATHASH*.
 * It will maintain nulls and empty strings.
 
