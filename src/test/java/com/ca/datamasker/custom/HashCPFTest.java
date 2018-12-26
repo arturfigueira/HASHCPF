@@ -22,6 +22,13 @@ public class HashCPFTest {
     }
 
     @Test
+    public void testHashedCPFWithMaskIsValid() {
+        final String validCPF = new MockCPFFactory(FormatMask.WITHMASK, CPFSize.REGULAR).getACPF();
+        final String hashedCPF = hasher.hashCPF(validCPF);
+        assertTrue("Hashing a valid CPF should generate a valid CPF too", CPFValidator.isValid(hashedCPF.replaceAll("\\D+","")));
+    }
+
+    @Test
     public void testHasherMaintainIntegry() {
         final String validCPF = new MockCPFFactory().getACPF();
         final String hashedCPF = hasher.hashCPF(validCPF);

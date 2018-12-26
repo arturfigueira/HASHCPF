@@ -26,7 +26,8 @@ public class HashCPF implements IMaskFunction {
     }
 
     protected String hashCPF(final String cpf){
-        if(!CPFValidator.isValid(cpf)){
+        final String cpfOnlyNumbers = cpf.replaceAll("\\D+", "");
+        if(!CPFValidator.isValid(cpfOnlyNumbers)){
             throw new IllegalArgumentException("This CPF is invalid, for this reason It cant be Masked");
         }
 
